@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 0.1.0 (2021-04-03)
+
 - Initial release of yabeda-schked gem. [@skryukov]
 
 [@skryukov]: https://github.com/skryukov
