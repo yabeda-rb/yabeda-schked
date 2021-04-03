@@ -35,7 +35,39 @@ And then execute:
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`.
+
+## Releasing
+
+1. Bump version number in `lib/yabeda/schked/version.rb`
+
+   In case of pre-releases keep in mind [rubygems/rubygems#3086](https://github.com/rubygems/rubygems/issues/3086) and check version with command like `Gem::Version.new(Yabeda::Schked::VERSION).to_s`
+
+2. Fill `CHANGELOG.md` with missing changes, add header with version and date.
+
+3. Make a commit:
+
+   ```sh
+   git add lib/yabeda/schked/version.rb CHANGELOG.md
+   version=$(ruby -r ./lib/yabeda/schked/version.rb -e "puts Gem::Version.new(Yabeda::Schked::VERSION)")
+   git commit --message="${version}: " --edit
+   ```
+
+4. Create annotated tag:
+
+   ```sh
+   git tag v${version} --annotate --message="${version}: " --edit --sign
+   ```
+
+5. Fill version name into subject line and (optionally) some description (list of changes will be taken from `CHANGELOG.md` and appended automatically)
+
+6. Push it:
+
+   ```sh
+   git push --follow-tags
+   ```
+
+7. GitHub Actions will create a new release, build and push gem into [rubygems.org](https://rubygems.org)! You're done!
 
 ## Contributing
 
