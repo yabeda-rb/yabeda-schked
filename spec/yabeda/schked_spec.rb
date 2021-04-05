@@ -19,10 +19,10 @@ RSpec.describe Yabeda::Schked do
         job.trigger_off_schedule
 
         expect(Yabeda.schked.jobs_executed_total.values).to include(
-          {job: job_name, success: true} => 1
+          {name: job_name, success: true} => 1
         )
         expect(Yabeda.schked.job_execution_runtime.values).to include(
-          {job: job_name, success: true} => kind_of(Numeric)
+          {name: job_name, success: true} => kind_of(Numeric)
         )
       end
     end
@@ -37,10 +37,10 @@ RSpec.describe Yabeda::Schked do
         job.trigger_off_schedule
 
         expect(Yabeda.schked.jobs_executed_total.values).to include(
-          {job: job_name, success: false} => 1
+          {name: job_name, success: false} => 1
         )
         expect(Yabeda.schked.job_execution_runtime.values).to include(
-          {job: job_name, success: false} => kind_of(Numeric)
+          {name: job_name, success: false} => kind_of(Numeric)
         )
       end
     end
@@ -56,10 +56,10 @@ RSpec.describe Yabeda::Schked do
           /Warning: No name specified for the job/
         ).to_stderr
         expect(Yabeda.schked.jobs_executed_total.values).to include(
-          {job: "none", success: true} => 1
+          {name: "none", success: true} => 1
         )
         expect(Yabeda.schked.job_execution_runtime.values).to include(
-          {job: "none", success: true} => kind_of(Numeric)
+          {name: "none", success: true} => kind_of(Numeric)
         )
       end
     end

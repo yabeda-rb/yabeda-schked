@@ -26,19 +26,19 @@ module Yabeda
       group :schked
 
       counter :jobs_executed_total,
-        tags: %i[job success],
+        tags: %i[name success],
         comment: "A counter of the number of jobs executed."
 
       histogram :job_execution_runtime,
         comment: "A histogram of the job execution time.",
         unit: :seconds,
         per: :job,
-        tags: %i[job success],
+        tags: %i[name success],
         buckets: LONG_RUNNING_JOB_RUNTIME_BUCKETS
     end
 
     ::Schked.config.register_callback(:after_finish) do |job|
-      labels = {success: !job.opts[:failed], job: job_name(job)}
+      labels = {success: !job.opts[:failed], name: job_name(job)}
       Yabeda.schked.job_execution_runtime.measure(labels, job.last_work_time.round(3))
       Yabeda.schked.jobs_executed_total.increment(labels)
     end
