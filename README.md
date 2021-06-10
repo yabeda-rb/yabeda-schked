@@ -1,7 +1,7 @@
+# ![`Yabeda::Schked`](./yabeda-schked-logo.png)
+
 [![Gem Version](https://badge.fury.io/rb/yabeda-schked.svg)](https://badge.fury.io/rb/yabeda-schked)
 [![Build Status](https://github.com/yabeda-rb/yabeda-schked/actions/workflows/test.yml/badge.svg)](https://github.com/yabeda-rb/yabeda-schked/actions?query=branch%3Amaster)
-
-# Yabeda::[Schked]
 
 Built-in metrics for monitoring [Schked] recurring jobs out of the box! Part of the [yabeda] suite.
 
