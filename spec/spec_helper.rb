@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+ENV["RACK_ENV"] = "test"
+
 require "yabeda/schked"
 
 require_relative "support/schked"
