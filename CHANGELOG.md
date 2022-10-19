@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Schked 1.0 support. [@bibendi]
+
 ## 0.1.1 (2021-04-05)
 
 ### Fixed
@@ -20,3 +24,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Initial release of yabeda-schked gem. [@skryukov]
 
 [@skryukov]: https://github.com/skryukov
+[@bibendi]: https://github.com/bibendi
