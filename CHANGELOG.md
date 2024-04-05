@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 0.2.1 (2024-04-05)
+
+### Fixed
+
+- Reset the `job.opts[:failed]` flag after a failed job [@arlantir]
+- Restoring tests [@arlantir]
+
+### Changed
+
+- Refactoring tests [@arlantir]
+
 ## 0.2.0 (2022-10-19)
 
 ### Added
@@ -27,3 +38,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 [@skryukov]: https://github.com/skryukov
 [@bibendi]: https://github.com/bibendi
+[@arlantir]: https://github.com/arlantir
