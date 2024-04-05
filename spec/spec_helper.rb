@@ -4,6 +4,7 @@ ENV["RACK_ENV"] = "test"
 
 require "yabeda/schked"
 
+require "yabeda/rspec"
 require_relative "support/schked"
 
 RSpec.configure do |config|
@@ -18,7 +19,6 @@ RSpec.configure do |config|
   end
 
   config.before(:all) do
-    Yabeda.configure!
     Schked.config.logger = Logger.new(nil)
   end
 end

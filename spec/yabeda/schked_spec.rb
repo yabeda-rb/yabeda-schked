@@ -9,23 +9,13 @@ RSpec.describe Yabeda::Schked do
     let(:worker) { Schked.worker.tap(&:pause) }
     let(:job) { worker.job(job_name) }
 
-    before do
-      Yabeda.schked.jobs_executed_total.values.clear
-      Yabeda.schked.job_execution_runtime.values.clear
-    end
-
     context "when job is successful" do
       let(:job_name) { "SuccessfulJob" }
 
       it "measures called job" do
-        job.trigger_off_schedule
-
-        expect(Yabeda.schked.jobs_executed_total.values).to include(
-          {name: job_name, success: true} => 1
-        )
-        expect(Yabeda.schked.job_execution_runtime.values).to include(
-          {name: job_name, success: true} => kind_of(Numeric)
-        )
+        expect { job.trigger_off_schedule }.to \
+          increment_yabeda_counter(Yabeda.schked.jobs_executed_total).with_tags(name: job_name, success: true).and \
+            measure_yabeda_histogram(Yabeda.schked.job_execution_runtime).with_tags(name: job_name, success: true)
       end
     end
 
@@ -35,23 +25,13 @@ RSpec.describe Yabeda::Schked do
       it "measures the job with failure and success" do
         job.opts[:failed] = true
 
-        job.trigger_off_schedule
+        expect { job.trigger_off_schedule }.to \
+          increment_yabeda_counter(Yabeda.schked.jobs_executed_total).with_tags(name: job_name, success: false).and \
+            measure_yabeda_histogram(Yabeda.schked.job_execution_runtime).with_tags(name: job_name, success: false)
 
-        expect(Yabeda.schked.jobs_executed_total.values).to include(
-          {name: job_name, success: false} => 1
-        )
-        expect(Yabeda.schked.job_execution_runtime.values).to include(
-          {name: job_name, success: false} => kind_of(Numeric)
-        )
-
-        job.trigger_off_schedule
-
-        expect(Yabeda.schked.jobs_executed_total.values).to include(
-          {name: job_name, success: true} => 1
-        )
-        expect(Yabeda.schked.job_execution_runtime.values).to include(
-          {name: job_name, success: true} => kind_of(Numeric)
-        )
+        expect { job.trigger_off_schedule }.to \
+          increment_yabeda_counter(Yabeda.schked.jobs_executed_total).with_tags(name: job_name, success: true).and \
+            measure_yabeda_histogram(Yabeda.schked.job_execution_runtime).with_tags(name: job_name, success: true)
       end
     end
 
@@ -59,14 +39,9 @@ RSpec.describe Yabeda::Schked do
       let(:job_name) { "FailedJob" }
 
       it "measures called job" do
-        job.trigger_off_schedule
-
-        expect(Yabeda.schked.jobs_executed_total.values).to include(
-          {name: job_name, success: false} => 1
-        )
-        expect(Yabeda.schked.job_execution_runtime.values).to include(
-          {name: job_name, success: false} => kind_of(Numeric)
-        )
+        expect { job.trigger_off_schedule }.to \
+          increment_yabeda_counter(Yabeda.schked.jobs_executed_total).with_tags(name: job_name, success: false).and \
+            measure_yabeda_histogram(Yabeda.schked.job_execution_runtime).with_tags(name: job_name, success: false)
       end
     end
 
@@ -74,15 +49,10 @@ RSpec.describe Yabeda::Schked do
       let(:job_name) { nil }
 
       it "measures called job" do
-        expect { job.trigger_off_schedule }.to output(
-          /Warning: No name specified for the job/
-        ).to_stderr
-        expect(Yabeda.schked.jobs_executed_total.values).to include(
-          {name: "none", success: true} => 1
-        )
-        expect(Yabeda.schked.job_execution_runtime.values).to include(
-          {name: "none", success: true} => kind_of(Numeric)
-        )
+        expect { job.trigger_off_schedule }.to \
+          increment_yabeda_counter(Yabeda.schked.jobs_executed_total).with_tags(name: "none", success: true).and \
+            measure_yabeda_histogram(Yabeda.schked.job_execution_runtime).with_tags(name: "none", success: true).and \
+              output(/Warning: No name specified for the job/).to_stderr
       end
     end
   end

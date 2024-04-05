@@ -1,4 +1,4 @@
-name: Run lint
+name: Lint
 
 on:
   push:
@@ -8,15 +8,14 @@ on:
 
 jobs:
   rubocop:
-    name: "Run lint"
+    name: "RuboCop"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: "3.3"
+          bundler-cache: true
       - name: Lint Ruby code with RuboCop
         run: |
-          gem install bundler
-          bundle install --jobs 4 --retry 3
           bundle exec rubocop

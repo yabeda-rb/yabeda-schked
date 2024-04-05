@@ -1,15 +1,18 @@
-name: Run tests
+name: Tests
 
 on:
+  pull_request:
   push:
     branches:
-      - master
-  pull_request:
+      - '**'
+    tags-ignore:
+      - 'v*'
 
 jobs:
-  rspec:
-    name: "Run tests"
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+  test:
+    name: "Ruby ${{ matrix.ruby }}"
+    # Skip running tests for local pull requests (use push event instead), run only for foreign ones
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.owner.login != github.event.pull_request.base.repo.owner.login
     runs-on: ubuntu-latest
     env:
       BUNDLE_JOBS: 4
@@ -19,28 +22,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ruby: 3.1
-          - ruby: 3.0
-          - ruby: 2.7
-          - ruby: 2.6
-          - ruby: 2.5
+          - ruby: "3.3"
+          - ruby: "3.2"
+          - ruby: "3.1"
+          - ruby: "3.0"
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v1
-        with:
-          path: /home/runner/bundle
-          key: bundle-${{ matrix.ruby }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
-          restore-keys: |
-            bundle-${{ matrix.ruby }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
-            bundle-${{ matrix.ruby }}-
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
-      - name: Bundle install
-        run: |
-          bundle config path /home/runner/bundle
-          bundle install
-          bundle update
+          bundler-cache: true
       - name: Run RSpec
-        run: |
-          bundle exec rspec
+        run: bundle exec rspec
