@@ -7,14 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 0.2.1 (2024-04-05)
+
 ### Fixed
 
-- Reset the `job.opts[:failed]` flag after a failed job [@arlantir]
-- Restoring tests [@arlantir]
-
-### Changed
-
-- Refactoring tests [@arlantir]
+- Reset the `success` tag after a job failure. [#3](https://github.com/yabeda-rb/yabeda-schked/pull/3) by [@arlantir]
 
 ## 0.2.0 (2022-10-19)
 
