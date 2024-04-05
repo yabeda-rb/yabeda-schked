@@ -41,6 +41,8 @@ module Yabeda
       labels = {success: !job.opts[:failed], name: job_name(job)}
       Yabeda.schked.job_execution_runtime.measure(labels, job.last_work_time.round(3))
       Yabeda.schked.jobs_executed_total.increment(labels)
+    ensure
+      job.opts[:failed] = false
     end
 
     ::Schked.config.register_callback(:on_error) do |job|
